@@ -1,0 +1,11 @@
+services:
+  norddns:
+    image: sreng1neer/norddns@0.1.0
+    restart: always
+    pull_policy: always
+    environment:
+      NORRDNS_REQUEST_DOMAIN: "norrdns.example.com"
+    ports:
+      - 53:5333/udp
+#    volumes:
+#      - ./database:/database
