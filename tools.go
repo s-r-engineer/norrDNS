@@ -20,6 +20,7 @@ func compareSlices(s1, s2 []string) bool {
 				return false
 			}
 		}
+		return true
 	}
 	return false
 }
