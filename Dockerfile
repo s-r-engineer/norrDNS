@@ -7,3 +7,4 @@ FROM ubuntu
 EXPOSE 53/udp
 COPY --from=builder /source/norrdns /
 CMD [ "/norddns" ]
+CMD [ "/norrdns" ]
