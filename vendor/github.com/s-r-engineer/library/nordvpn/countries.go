@@ -2,15 +2,18 @@ package libraryNordvpn
 
 import (
 	"encoding/json"
+	libraryErrors "github.com/s-r-engineer/library/errors"
+	libraryHttp "github.com/s-r-engineer/library/http"
 	"io"
-	"net/http"
 	"strings"
 )
 
 const DefaultCountriesListURL = "https://api.nordvpn.com/v1/countries"
 
+var countryList map[string]int
+
 func GetCountryList() (Countries, error) {
-	resp, err := http.Get(DefaultCountriesListURL)
+	resp, err := libraryHttp.GetUrl(DefaultCountriesListURL)
 	if err != nil {
 		return nil, err
 	}
@@ -24,14 +27,32 @@ func GetCountryList() (Countries, error) {
 	return c, err
 }
 
-func GetCountryCode(code string) int {
-	countries, _ := GetCountryList()
-	for _, country := range countries {
-		if strings.EqualFold(country.Code, code) {
-			return country.ID
-		}
+func GetCountryCode(code string) (int, error) {
+	wrapper := libraryErrors.PartWrapError("GetCountryCode")
+	err := populateCountryList()
+	if err != nil {
+		return -2, wrapper(err)
 	}
-	return -1
+	if id, ok := countryList[code]; ok {
+		return id, nil
+	}
+	return -1, nil
+}
+
+func populateCountryList() error {
+	if countryList != nil {
+		return nil
+	}
+	countries, err := GetCountryList()
+	if err != nil {
+		return err
+	}
+	countryList = make(map[string]int)
+	for _, c := range countries {
+		countryList[strings.ToLower(c.Code)] = c.ID
+	}
+	countryList["uk"] = countryList["gb"]
+	return nil
 }
 
 type Countries []struct {

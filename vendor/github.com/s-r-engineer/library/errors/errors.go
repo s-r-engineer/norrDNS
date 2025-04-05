@@ -1,6 +1,7 @@
 package libraryErrors
 
 import (
+	"errors"
 	"fmt"
 
 	libraryLogging "github.com/s-r-engineer/library/logging"
@@ -18,6 +19,21 @@ func checker(a any, f func(any)) {
 	if a != nil {
 		f(a)
 	}
+}
+
+func PartWrapError(msg string) func(err error) error {
+	return func(err error) error {
+		return WrapError(msg, err)
+	}
+}
+
+func PartWrapErrorOrString(msg string) (func(err error) error, func(err string) error) {
+	return func(err error) error {
+			return WrapError(msg, err)
+		},
+		func(err string) error {
+			return WrapError(msg, errors.New(err))
+		}
 }
 
 func WrapError(msg string, err error) error {
