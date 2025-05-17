@@ -17,7 +17,8 @@ func handleDNSRequest(w dns.ResponseWriter, r *dns.Msg) {
 		domain := r.Question[0].Name
 		q.QueriedAddress = domain
 		splitted := strings.Split(domain, ".")
-		countryID := countrieExist(splitted[0])
+		countryID, err := libraryNordvpn.GetCountryCode(splitted[0])
+		libraryErrors.Errorer(err)
 		if compareSlices(splitted[1:], FQDNBase) && countryID != -1 {
 			hostname, _, _, _, err := libraryNordvpn.FetchServerData(countryID)
 			libraryErrors.Errorer(err)

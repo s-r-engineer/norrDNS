@@ -1,18 +1,5 @@
 package main
 
-import (
-	"io"
-	"net/http"
-
-	libraryErrors "github.com/s-r-engineer/library/errors"
-)
-
-func parseBody(resp *http.Response) (b []byte) {
-	b, err := io.ReadAll(resp.Body)
-	libraryErrors.Errorer(err)
-	return
-}
-
 func compareSlices(s1, s2 []string) bool {
 	if len(s1) == len(s2) {
 		for i := range s1 {

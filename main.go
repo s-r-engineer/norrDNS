@@ -22,9 +22,7 @@ func initParams() {
 }
 
 func main() {
-	initClient()
-	getCountries()
-	//initDatabase() // off by default
+	initDatabase()
 	initParams()
 	libraryLogging.Info("init done")
 	dns.HandleFunc(".", handleDNSRequest)
