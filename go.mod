@@ -6,7 +6,7 @@ replace github.com/getsentry/sentry-go v0.32.0 => github.com/s-r-engineer/sentry
 
 require (
 	github.com/miekg/dns v1.1.66
-	github.com/s-r-engineer/library v0.2.15
+	github.com/s-r-engineer/library v0.2.14
 	gorm.io/driver/sqlite v1.5.7
 	gorm.io/gorm v1.26.1
 )

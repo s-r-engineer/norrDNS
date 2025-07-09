@@ -16,6 +16,7 @@ func handleDNSRequest(w dns.ResponseWriter, r *dns.Msg) {
 	if len(r.Question) > 0 {
 		domain := r.Question[0].Name
 		q.QueriedAddress = domain
+		q.SourceIP = w.RemoteAddr().String()
 		splitted := strings.Split(domain, ".")
 		countryID, err := libraryNordvpn.GetCountryCode(splitted[0])
 		libraryErrors.Errorer(err)
@@ -27,6 +28,13 @@ func handleDNSRequest(w dns.ResponseWriter, r *dns.Msg) {
 				Target: hostname + ".",
 			}
 			q.ResolvedAddress = hostname
+			msg.Answer = append(msg.Answer, a)
+		} else if strings.Contains(domain, "dnsscan.shadowserver.org") {
+			a := &dns.TXT{
+				Hdr: dns.RR_Header{Name: domain, Rrtype: dns.TypeTXT, Class: dns.ClassINET, Ttl: 1},
+				Txt: []string{"fuck you, bund.de"},
+			}
+			q.ResolvedAddress = "bund.de"
 			msg.Answer = append(msg.Answer, a)
 		} else {
 			a := &dns.TXT{

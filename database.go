@@ -15,6 +15,7 @@ type queryHistory struct {
 	ResolvedLoad    int
 	CountryId       int
 	CountryCode     string
+	SourceIP        string
 }
 
 var db *gorm.DB

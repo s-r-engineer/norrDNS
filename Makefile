@@ -1,4 +1,4 @@
-VERSION := 0.1.1
+VERSION := 0.1.2
 
 build:
 	docker build -t sreng1neer/norrdns:$(VERSION) .
